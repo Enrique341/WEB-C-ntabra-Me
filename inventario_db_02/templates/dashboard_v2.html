@@ -1,0 +1,106 @@
+{% extends "base_v2.html" %}
+{% block contenido %}
+
+<!-- HERO BANNER -->
+<div class="hero-banner">
+    <div>
+        <div class="hero-pill">Panel principal</div>
+        <h1 class="hero-title">Dashboard del<br><span>Inventario</span></h1>
+        <p class="hero-desc">Resumen en tiempo real de productos perecibles, stock, vencimientos e indicadores financieros.</p>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; position:relative; z-index:1;">
+        <a href="/productos/nuevo" class="btn btn-primary">+ Agregar producto</a>
+        <a href="/productos/exportar" class="btn btn-outline">↓ Exportar CSV</a>
+    </div>
+</div>
+
+<!-- MÉTRICAS -->
+<div class="metrics-grid">
+
+    <div class="metric-card mc-purple">
+        <div class="metric-icon mi-purple">📦</div>
+        <div class="metric-value">
+            <span class="count-up" data-target="{{ total_productos }}">{{ total_productos }}</span>
+        </div>
+        <div class="metric-label">Total productos
+            <span class="metric-sub">Registrados en el sistema</span>
+        </div>
+    </div>
+
+    <div class="metric-card mc-amber">
+        <div class="metric-icon mi-amber">⚠️</div>
+        <div class="metric-value">
+            <span class="count-up" data-target="{{ bajo_stock }}">{{ bajo_stock }}</span>
+        </div>
+        <div class="metric-label">Bajo stock
+            <span class="metric-sub">Necesitan reposición</span>
+        </div>
+    </div>
+
+    <div class="metric-card mc-red">
+        <div class="metric-icon mi-red">🚫</div>
+        <div class="metric-value">
+            <span class="count-up" data-target="{{ vencidos }}">{{ vencidos }}</span>
+        </div>
+        <div class="metric-label">Productos vencidos
+            <span class="metric-sub">Retirar del inventario</span>
+        </div>
+    </div>
+
+    <div class="metric-card mc-pink">
+        <div class="metric-icon mi-pink">⏳</div>
+        <div class="metric-value">
+            <span class="count-up" data-target="{{ por_vencer }}">{{ por_vencer }}</span>
+        </div>
+        <div class="metric-label">Por vencer
+            <span class="metric-sub">Próximos 30 días</span>
+        </div>
+    </div>
+
+    <div class="metric-card mc-green">
+        <div class="metric-icon mi-green">💰</div>
+        <div class="metric-value" style="font-size:28px;">
+            S/ <span class="count-up" data-target="{{ valor_compra }}" data-decimal="true">{{ valor_compra }}</span>
+        </div>
+        <div class="metric-label">Inversión total
+            <span class="metric-sub">Stock × precio de compra</span>
+        </div>
+    </div>
+
+    <div class="metric-card mc-sky">
+        <div class="metric-icon mi-sky">📈</div>
+        <div class="metric-value" style="font-size:28px;">
+            S/ <span class="count-up" data-target="{{ valor_venta }}" data-decimal="true">{{ valor_venta }}</span>
+        </div>
+        <div class="metric-label">Valor de venta
+            <span class="metric-sub">Stock × precio de venta</span>
+        </div>
+    </div>
+
+    <div class="metric-card mc-purple">
+        <div class="metric-icon mi-purple">🎯</div>
+        <div class="metric-value" style="font-size:28px;">
+            S/ <span class="count-up" data-target="{{ ganancia_estimada }}" data-decimal="true">{{ ganancia_estimada }}</span>
+        </div>
+        <div class="metric-label">Ganancia estimada
+            <span class="metric-sub">Venta − inversión</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- ACCIONES RÁPIDAS -->
+<p class="section-title">Acciones rápidas</p>
+<div class="quick-grid">
+    <a href="/productos" class="quick-item">
+        <span class="qi-icon">📋</span> Ver todos los productos
+    </a>
+    <a href="/productos/vencer" class="quick-item">
+        <span class="qi-icon">🕐</span> Próximos a vencer
+    </a>
+    <a href="/productos/exportar" class="quick-item">
+        <span class="qi-icon">📊</span> Descargar reporte CSV
+    </a>
+</div>
+
+{% endblock %}

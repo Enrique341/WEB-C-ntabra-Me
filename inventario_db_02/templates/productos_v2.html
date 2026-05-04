@@ -1,0 +1,93 @@
+{% extends "base_v2.html" %}
+{% block contenido %}
+
+<div class="hero-banner">
+    <div>
+        <div class="hero-pill">Gestión de inventario</div>
+        <h1 class="hero-title">Lista de <span>Productos</span></h1>
+        <p class="hero-desc">Administra tu inventario perecible: stock, precios, fechas y alertas de reposición.</p>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; position:relative; z-index:1;">
+        <a href="/productos/nuevo" class="btn btn-primary">+ Nuevo Producto</a>
+        <a href="/productos/exportar" class="btn btn-success">↓ Exportar CSV</a>
+    </div>
+</div>
+
+<!-- FILTROS -->
+<div class="filter-bar">
+    <div>
+        <label>Desde</label>
+        <input type="date" name="fecha_inicio" id="fi" value="{{ request.args.get('fecha_inicio', '') }}">
+    </div>
+    <div>
+        <label>Hasta</label>
+        <input type="date" name="fecha_fin" id="ff" value="{{ request.args.get('fecha_fin', '') }}">
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="filtrar()">Filtrar</button>
+    <a href="/productos" class="btn btn-outline btn-sm">Limpiar</a>
+</div>
+
+<!-- TABLA -->
+<div class="table-wrap">
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                    <th>Stock mín.</th>
+                    <th>P. Compra</th>
+                    <th>P. Venta</th>
+                    <th>Ingreso</th>
+                    <th>Vencimiento</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td class="td-code">{{ producto.codigo }}</td>
+                    <td><strong>{{ producto.nombre }}</strong></td>
+                    <td><span class="badge b-cat">{{ producto.categoria }}</span></td>
+                    <td>{{ producto.stock }}</td>
+                    <td>{{ producto.stock_minimo }}</td>
+                    <td>S/ {{ producto.precio_compra }}</td>
+                    <td>S/ {{ producto.precio_venta }}</td>
+                    <td>{{ producto.fecha_ingreso }}</td>
+                    <td>{{ producto.fecha_vencimiento }}</td>
+                    <td>
+                        {% if producto.stock <= producto.stock_minimo %}
+                            <span class="badge b-alert">⚠ Bajo stock</span>
+                        {% else %}
+                            <span class="badge b-ok">✓ Normal</span>
+                        {% endif %}
+                    </td>
+                    <td style="display:flex; gap:8px;">
+                        <a href="/productos/editar/{{ producto.id }}" class="btn btn-outline btn-sm">Editar</a>
+                        <a href="/productos/eliminar/{{ producto.id }}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('¿Eliminar este producto?')">Eliminar</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="11" style="text-align:center; padding:40px; color:var(--white-muted);">
+                        No hay productos registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function filtrar() {
+    const fi = document.getElementById('fi').value;
+    const ff = document.getElementById('ff').value;
+    if (fi && ff) window.location.href = `/productos/filtrar?fecha_inicio=${fi}&fecha_fin=${ff}`;
+}
+</script>
+{% endblock %}

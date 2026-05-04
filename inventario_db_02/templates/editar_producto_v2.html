@@ -1,0 +1,58 @@
+{% extends "base_v2.html" %}
+{% block contenido %}
+
+<div class="hero-banner" style="margin-bottom:28px;">
+    <div>
+        <div class="hero-pill">Actualización</div>
+        <h1 class="hero-title">Editar <span>Producto</span></h1>
+        <p class="hero-desc">Modifica el stock, los precios y las fechas del producto seleccionado.</p>
+    </div>
+</div>
+
+<div class="form-card">
+    <form action="/productos/actualizar/{{ producto.id }}" method="POST">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Código</label>
+                <input type="text" name="codigo" value="{{ producto.codigo }}" required>
+            </div>
+            <div class="form-group">
+                <label>Nombre del producto</label>
+                <input type="text" name="nombre" value="{{ producto.nombre }}" required>
+            </div>
+            <div class="form-group">
+                <label>Categoría</label>
+                <input type="text" name="categoria" value="{{ producto.categoria }}" required>
+            </div>
+            <div class="form-group">
+                <label>Stock actual</label>
+                <input type="number" name="stock" min="0" value="{{ producto.stock }}" required>
+            </div>
+            <div class="form-group">
+                <label>Stock mínimo</label>
+                <input type="number" name="stock_minimo" min="0" value="{{ producto.stock_minimo }}" required>
+            </div>
+            <div class="form-group">
+                <label>Precio de compra (S/)</label>
+                <input type="number" step="0.01" name="precio_compra" value="{{ producto.precio_compra }}" required>
+            </div>
+            <div class="form-group">
+                <label>Precio de venta (S/)</label>
+                <input type="number" step="0.01" name="precio_venta" value="{{ producto.precio_venta }}" required>
+            </div>
+            <div class="form-group">
+                <label>Fecha de ingreso</label>
+                <input type="date" name="fecha_ingreso" value="{{ producto.fecha_ingreso }}" required>
+            </div>
+            <div class="form-group">
+                <label>Fecha de vencimiento</label>
+                <input type="date" name="fecha_vencimiento" value="{{ producto.fecha_vencimiento }}" required>
+            </div>
+            <div class="form-group full">
+                <button type="submit">Actualizar producto →</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base_v2.html" %}
+{% block contenido %}
+
+<div class="hero-banner">
+    <div>
+        <div class="hero-pill">Control de vencimientos</div>
+        <h1 class="hero-title">Productos por <span>Vencer</span></h1>
+        <p class="hero-desc">Productos perecibles que vencen dentro de los próximos 30 días. Toma acción a tiempo.</p>
+    </div>
+    <a href="/productos/exportar" class="btn btn-outline" style="position:relative;z-index:1;">↓ Exportar CSV</a>
+</div>
+
+<div class="table-wrap">
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                    <th>P. Compra</th>
+                    <th>P. Venta</th>
+                    <th>Fecha vencimiento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td class="td-code">{{ producto.codigo }}</td>
+                    <td><strong>{{ producto.nombre }}</strong></td>
+                    <td><span class="badge b-cat">{{ producto.categoria }}</span></td>
+                    <td>{{ producto.stock }}</td>
+                    <td>S/ {{ producto.precio_compra }}</td>
+                    <td>S/ {{ producto.precio_venta }}</td>
+                    <td><span class="badge b-warn">⏰ {{ producto.fecha_vencimiento }}</span></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" style="text-align:center; padding:48px; color:var(--white-muted);">
+                        ✅ No hay productos próximos a vencer.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

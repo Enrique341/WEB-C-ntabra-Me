@@ -1,0 +1,58 @@
+{% extends "base_v2.html" %}
+{% block contenido %}
+
+<div class="hero-banner" style="margin-bottom:28px;">
+    <div>
+        <div class="hero-pill">Nuevo registro</div>
+        <h1 class="hero-title">Registrar <span>Producto</span></h1>
+        <p class="hero-desc">Agrega un nuevo producto perecible con todos sus datos de stock, precio y fechas.</p>
+    </div>
+</div>
+
+<div class="form-card">
+    <form action="/productos/guardar" method="POST">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Código</label>
+                <input type="text" name="codigo" placeholder="Ej: PER001" required>
+            </div>
+            <div class="form-group">
+                <label>Nombre del producto</label>
+                <input type="text" name="nombre" placeholder="Ej: Yogurt natural 1L" required>
+            </div>
+            <div class="form-group">
+                <label>Categoría</label>
+                <input type="text" name="categoria" placeholder="Ej: Lácteos" required>
+            </div>
+            <div class="form-group">
+                <label>Stock actual</label>
+                <input type="number" name="stock" min="0" placeholder="0" required>
+            </div>
+            <div class="form-group">
+                <label>Stock mínimo</label>
+                <input type="number" name="stock_minimo" min="0" placeholder="0" required>
+            </div>
+            <div class="form-group">
+                <label>Precio de compra (S/)</label>
+                <input type="number" step="0.01" name="precio_compra" placeholder="0.00" required>
+            </div>
+            <div class="form-group">
+                <label>Precio de venta (S/)</label>
+                <input type="number" step="0.01" name="precio_venta" placeholder="0.00" required>
+            </div>
+            <div class="form-group">
+                <label>Fecha de ingreso</label>
+                <input type="date" name="fecha_ingreso" required>
+            </div>
+            <div class="form-group">
+                <label>Fecha de vencimiento</label>
+                <input type="date" name="fecha_vencimiento" required>
+            </div>
+            <div class="form-group full">
+                <button type="submit">Guardar producto →</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

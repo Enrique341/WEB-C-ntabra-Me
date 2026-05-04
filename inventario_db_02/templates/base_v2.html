@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshStock — Inventario Perecible</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+<!-- Fondo de puntos animados -->
+<div class="dot-grid"></div>
+
+<!-- ==================== NAVBAR ==================== -->
+<nav class="navbar">
+    <a href="/" class="brand">
+        <div class="brand-logo">
+            <img src="{{ url_for('static', filename='img/mi.png') }}" alt="FreshStock Logo">
+        </div>
+        <div>
+            <div class="brand-name">FreshStock</div>
+            <div class="brand-sub">Inventario perecible</div>
+        </div>
+    </a>
+
+    <ul class="nav-links">
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/productos">Productos</a></li>
+        <li><a href="/productos/vencer">Por vencer</a></li>
+        <li><a href="/productos/exportar">Exportar CSV</a></li>
+        <li><a href="/productos/nuevo" class="nav-cta">+ Nuevo producto</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- Menú móvil -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="/">Dashboard</a>
+    <a href="/productos">Productos</a>
+    <a href="/productos/vencer">Por vencer</a>
+    <a href="/productos/exportar">Exportar CSV</a>
+    <a href="/productos/nuevo">+ Nuevo producto</a>
+</div>
+
+<!-- ==================== CONTENIDO ==================== -->
+<main class="page">
+    {% block contenido %}{% endblock %}
+</main>
+
+<!-- ==================== MARQUEE ==================== -->
+<div class="marquee-strip">
+    <div class="marquee-track" id="marqueeTrack">
+        <span>🟣 FreshStock</span>
+        <span>·</span>
+        <span>Control de inventario perecible</span>
+        <span>·</span>
+        <span>Stock actualizado en tiempo real</span>
+        <span>·</span>
+        <span>Alertas de vencimiento activas</span>
+        <span>·</span>
+        <span>Exporta tu reporte en CSV</span>
+        <span>·</span>
+        <span>🟣 FreshStock</span>
+        <span>·</span>
+        <span>Control de inventario perecible</span>
+        <span>·</span>
+        <span>Stock actualizado en tiempo real</span>
+        <span>·</span>
+        <span>Alertas de vencimiento activas</span>
+        <span>·</span>
+        <span>Exporta tu reporte en CSV</span>
+        <span>·</span>
+    </div>
+</div>
+
+<!-- ==================== JS ==================== -->
+<script>
+    /* Hamburger toggle */
+    const ham = document.getElementById('hamburger');
+    const mob = document.getElementById('mobileMenu');
+    ham.addEventListener('click', () => {
+        ham.classList.toggle('open');
+        mob.style.display = mob.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    /* Counter animation */
+    function animateCounter(el) {
+        const target = parseFloat(el.dataset.target);
+        const isDecimal = el.dataset.decimal === 'true';
+        const prefix = el.dataset.prefix || '';
+        const duration = 1200;
+        const start = performance.now();
+        const update = (now) => {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const value = target * ease;
+            el.textContent = prefix + (isDecimal
+                ? value.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                : Math.floor(value).toLocaleString('es-PE'));
+            if (progress < 1) requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);
+    }
+
+    /* Observador para disparar counter al entrar en viewport */
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting && !e.target.dataset.animated) {
+                e.target.dataset.animated = 'true';
+                animateCounter(e.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.count-up').forEach(el => observer.observe(el));
+
+    /* Highlight enlace activo */
+    const links = document.querySelectorAll('.nav-links a, .mobile-menu a');
+    const path = window.location.pathname;
+    links.forEach(a => {
+        if (a.getAttribute('href') === path) {
+            a.style.color = 'var(--white)';
+            a.style.background = 'var(--glass-hover)';
+        }
+    });
+</script>
+</body>
+</html>
